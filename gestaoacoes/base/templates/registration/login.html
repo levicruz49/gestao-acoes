@@ -1,0 +1,43 @@
+{% extends 'core/base_login.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+{% block title %} Pagina de login {% endblock %}
+
+{% block menu %}
+
+{% endblock %}
+
+{% block main %}
+    <!-- Content Wrapper -->
+    <div class="login-wrapper">
+        <div class="container-center">
+            <div class="login-area">
+                <div class="card panel-custom">
+                    <div class="card-heading custom_head">
+                        <div class="view-header">
+                            <div class="header-icon">
+                                <i class="fa fa-lock"></i>
+                            </div>
+                            <div class="header-title">
+                                <h3>Login</h3>
+                                <small><strong>Por favor entre com suas credenciais.</strong></small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="{% url 'login' %}">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <button type="submit" class="btn btn-primary">Login</button>
+                            <a href="{% url 'password_reset' %}" class="btn btn-warning">Esqueci minha senha</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,127 @@
+{% extends 'core/base_datatable.html' %}
+{% load static %}
+
+
+{% block title %}Lista Notas{% endblock %}
+
+{% block page_header %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="header-icon">
+            <i class="fa fa-wifi"></i>
+        </div>
+        <div class="header-title">
+            <h1>Lista de Notas</h1>
+            <small>Aqui esta a lista das suas notas.</small>
+        </div>
+    </section>
+{% endblock %}
+
+{% block section %}
+    <!-- Site wrapper -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12 pinpin">
+                <div class="card lobicard" data-sortable="true">
+                    <div class="card-header">
+                        <div class="card-title custom_title">
+                            <h4>Lista de Notas</h4>
+                        </div>
+                    </div>
+                    <!-- Exportar Arquivos> <-->
+                    <div class="card-body">
+                        <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
+                        <div class="btn-group d-flex" role="group">
+                            <div class="buttonexport" id="buttonlist">
+                                <a class="btn btn-add btn-sm" href="{ url 'clientes:novo_cliente' %}"> <i
+                                        class="fa fa-plus"></i>
+                                    Nova Nota
+                                </a>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-exp btn-sm" data-toggle="dropdown"><i class="fa fa-bars"></i>
+                                Exportar Notas.
+                            </button>
+                            <ul class="dropdown-menu exp-drop" role="menu">
+                                <li>
+                                    <a href="#"
+                                       onclick="$('#tb_clientes').tableExport({type:'excel',escape:'false'});">
+                                        <img src="{% static 'assets/dist/img/xls.png' %}" width="24" alt="logo"> XLS</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <br><br>
+                        <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
+                        <div class="table-responsive">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}"
+                                         role="alert">{{ message }}</div>
+                                {% endfor %}
+                            {% endif %}
+
+                            <table class="table table-bordered table-striped table-hover" id="tb_clientes">
+                                <thead class="back_table_color">
+                                <tr>
+                                    <th scope="col">Razão Social</th>
+                                    <th scope="col">CNPJ</th>
+                                    <th scope="col">Inscrição</th>
+                                    <th scope="col">Responsavel</th>
+                                    <th scope="col">Editar|Detalhes|Excluir</th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for cliente in clientes %}
+
+                                    <tr>
+
+                                    <td>{{ cliente.nm_razao_social }}</td>
+                                    <td>{{ cliente.nr_cnpj }}</td>
+                                    <td>{{ cliente.nr_inscricao }}</td>
+                                    <td>{{ cliente.nm_responsavel }}</td>
+
+                                    <td>
+                                        <a href="{% url 'clientes:editar_cliente' cliente.id %}">
+                                            <button type="button" class="btn btn-add btn-sm"
+                                                    data-toggle="modal"><i class="fa fa-pencil"></i>
+                                            </button>
+                                        </a>
+                                        <a href="{% url 'clientes:detalhe_cliente' cliente.id %}">
+                                            <button type="button" class="btn btn-secondary btn-sm"
+                                                    data-toggle="modal"><i class="fa fa-list"></i>
+                                            </button>
+                                        </a>
+                                        <a href="{% url 'clientes:deletar_cliente' cliente.id %}">
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                    data-toggle="modal"><i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </a>
+                                    </td>
+
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- customer Modal1 -->
+    </section>
+    <!-- /.content -->
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            $('#tb_clientes')
+                .DataTable()
+        });
+
+    </script>
+
+
+{% endblock %}

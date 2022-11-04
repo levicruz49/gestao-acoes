@@ -1,0 +1,39 @@
+.trash-item {
+    float: right;
+}
+
+#server_time{
+    float: right;
+}
+
+.esquerda{
+    float: left;
+}
+
+.foot_menssage{
+    float: left;
+}
+
+.nav-item reset{
+    float: center;
+}
+
+.msg_erro{
+    color : red;
+    }
+
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
+
+.index{
+    color: blue;
+}
+
+.qtd_filial {
+        text-align: center;
+}
