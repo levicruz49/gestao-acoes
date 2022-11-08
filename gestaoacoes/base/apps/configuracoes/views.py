@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import UpdateView, DeleteView
 
 from gestaoacoes.base.apps.configuracoes import facade
-from gestaoacoes.base.apps.configuracoes.facade import criar_corretora
+from gestaoacoes.base.apps.configuracoes.facade import criar_corretora, edita_corretora
 from gestaoacoes.base.apps.configuracoes.forms import InsereCorretoraForm, AtualizaCorretoraForm
 
 
@@ -43,7 +43,7 @@ class editar_corretora(SuccessMessageMixin, UpdateView):
 
     def form_valid(self, form):
         corretora = form
-        criar_corretora(corretora, self.request)
+        edita_corretora(corretora, self.request)
 
         return super(editar_corretora, self).form_valid(form)
 

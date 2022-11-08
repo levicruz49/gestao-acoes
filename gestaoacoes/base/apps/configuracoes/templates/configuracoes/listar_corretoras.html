@@ -68,6 +68,7 @@
                                     <th scope="col">Corretora</th>
                                     <th scope="col">Razão Social</th>
                                     <th scope="col">CNPJ</th>
+                                    <th scope="col">Saldo</th>
                                     <th scope="col">Editar|Detalhes|Excluir</th>
 
                                 </tr>
@@ -80,6 +81,7 @@
                                     <td>{{ corretora.nome_corretora }}</td>
                                     <td>{{ corretora.razao_social }}</td>
                                     <td>{{ corretora.cnpj }}</td>
+                                    <td>{{ corretora.saldo }}</td>
 
                                     <td>
                                         <a href="{% url 'configuracoes:editar_corretora' corretora.pk %}">

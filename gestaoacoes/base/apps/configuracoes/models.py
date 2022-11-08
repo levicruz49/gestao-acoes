@@ -14,11 +14,28 @@ class Corretora(models.Model):
     razao_social = models.CharField('Razão Social', max_length=200)
     cnpj = models.CharField('Nº CNPJ', max_length=18)
     ativa = models.CharField('Ativa', max_length=1, choices=ATIVA)
+    saldo = models.DecimalField('Saldo', max_digits=12, decimal_places=2, default=0)
+
 
     class Meta:
         verbose_name_plural = "Corretoras"
 
     def __str__(self):
         return self.nome_corretora
+
+    objects = models
+
+
+class EmpresasListadas(models.Model):
+    id_empresas_listadas = models.BigAutoField(primary_key=True)
+    ticker = models.CharField('Ticker', max_length=30)
+    cnpj = models.CharField('Nº CNPJ', max_length=18, blank=True, null=True)
+    razao_social = models.CharField('Razão Social', max_length=200)
+
+    class Meta:
+        verbose_name_plural = "Empresas Listadas"
+
+    def __str__(self):
+        return self.ticker
 
     objects = models

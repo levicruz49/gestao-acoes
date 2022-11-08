@@ -31,7 +31,10 @@ INSTALLED_APPS = [
     'gestaoacoes.base.apps.notas',
     "bootstrap4",
     'crispy_forms',
+    'rolepermissions',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

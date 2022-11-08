@@ -193,7 +193,7 @@
                             <div class="dropdown-menu drop_down">
                                 <div class="menus">
                                     <a class="dropdown-item" href="/admin/" target="_blank"><i
-                                            class="fa fa-bar-chart"></i> Configurações</a>
+                                            class="fa fa-bar-chart"></i> Administração</a>
                                 </div>
                             </div>
                         </li>
@@ -232,11 +232,26 @@
             <!-- sidebar menu -->
             <ul class="sidebar-menu">
                 <li class="active">
-                    <a href="{ url 'core:home' %}"><i class="fa fa-home"></i><span>Home</span>
+                    <a href="{% url 'base:home' %}"><i class="fa fa-home"></i><span>Home</span>
                         <span class="pull-right-container">
                      </span>
                     </a>
                 </li>
+                {% comment %}CONFIGURAÇOES{% endcomment %}
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-users"></i><span>Configurações</span>
+                        <span class="pull-right-container">
+                     <i class="fa fa-angle-left float-right"></i>
+                     </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{% url 'configuracoes:lista_corretoras' %}">Corretoras</a></li>
+                        <li><a href="{ url 'telefones:lista_telefones' %}">Notas Day Trade</a></li>
+                        <li><a href="{ url 'func_pendente:lista_func_pendente' %}">Notas Opçoes</a></li>
+                    </ul>
+                </li>
+                {% comment %}NOTAS{% endcomment %}
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-users"></i><span>Notas</span>
@@ -341,7 +356,7 @@
     </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">
-        <strong>Copyright &copy; {% now 'Y ' %} <a href="#">Gestão De Ações</a>.</strong> Todos os direitos reservados.
+        <strong>Copyright &copy; {% now 'Y ' %} <a href="#">Gestão de Ações</a>.</strong> Todos os direitos reservados.
     </footer>
 </div>
 <!-- /.wrapper -->
