@@ -34,7 +34,7 @@
                         <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
                         <div class="btn-group d-flex" role="group">
                             <div class="buttonexport" id="buttonlist">
-                                <a class="btn btn-add btn-sm" href="{ url 'clientes:novo_cliente' %}"> <i
+                                <a class="btn btn-add btn-sm" href="{% url 'notas:nova_nota' %}"> <i
                                         class="fa fa-plus"></i>
                                     Nova Nota
                                 </a>
@@ -47,7 +47,7 @@
                             <ul class="dropdown-menu exp-drop" role="menu">
                                 <li>
                                     <a href="#"
-                                       onclick="$('#tb_clientes').tableExport({type:'excel',escape:'false'});">
+                                       onclick="$('#tb_notas').tableExport({type:'excel',escape:'false'});">
                                         <img src="{% static 'assets/dist/img/xls.png' %}" width="24" alt="logo"> XLS</a>
                                 </li>
                             </ul>
@@ -62,39 +62,43 @@
                                 {% endfor %}
                             {% endif %}
 
-                            <table class="table table-bordered table-striped table-hover" id="tb_clientes">
+                            <table class="table table-bordered table-striped table-hover" id="tb_notas">
                                 <thead class="back_table_color">
                                 <tr>
-                                    <th scope="col">Razão Social</th>
-                                    <th scope="col">CNPJ</th>
-                                    <th scope="col">Inscrição</th>
-                                    <th scope="col">Responsavel</th>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Nota</th>
+                                    <th scope="col">Corretora</th>
+                                    <th scope="col">Data Pregão</th>
+                                    <th scope="col">Data Liquidação</th>
                                     <th scope="col">Editar|Detalhes|Excluir</th>
 
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for cliente in clientes %}
+                                {% for nota in notas %}
 
                                     <tr>
 
-                                    <td>{{ cliente.nm_razao_social }}</td>
-                                    <td>{{ cliente.nr_cnpj }}</td>
-                                    <td>{{ cliente.nr_inscricao }}</td>
-                                    <td>{{ cliente.nm_responsavel }}</td>
+                                    <td>{{ nota.id_notas }}</td>
+                                    <td>{{ nota.status }}</td>
+                                    <td>{{ nota.nota }}</td>
+                                    <td>{{ nota.fk_corretora }}</td>
+                                    <td>{{ nota.data_pregao }}</td>
+                                    <td>{{ nota.data_liquidacao }}</td>
 
                                     <td>
-                                        <a href="{% url 'clientes:editar_cliente' cliente.id %}">
+                                        <a href="{ url 'clientes:editar_cliente' cliente.id %}">
                                             <button type="button" class="btn btn-add btn-sm"
                                                     data-toggle="modal"><i class="fa fa-pencil"></i>
                                             </button>
                                         </a>
-                                        <a href="{% url 'clientes:detalhe_cliente' cliente.id %}">
+                                        <a href="{ url 'clientes:detalhe_cliente' cliente.id %}">
                                             <button type="button" class="btn btn-secondary btn-sm"
                                                     data-toggle="modal"><i class="fa fa-list"></i>
                                             </button>
                                         </a>
-                                        <a href="{% url 'clientes:deletar_cliente' cliente.id %}">
+                                        <a href="{ url 'clientes:deletar_cliente' cliente.id %}">
                                             <button type="button" class="btn btn-danger btn-sm"
                                                     data-toggle="modal"><i class="fa fa-trash-o"></i>
                                             </button>
@@ -117,7 +121,7 @@
 {% block scripts %}
     <script>
         $(document).ready(function () {
-            $('#tb_clientes')
+            $('#tb_notas')
                 .DataTable()
         });
 

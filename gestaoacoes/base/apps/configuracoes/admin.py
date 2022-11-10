@@ -1,5 +1,5 @@
 from django.contrib import admin
-from gestaoacoes.base.apps.configuracoes.models import Corretora, EmpresasListadas
+from gestaoacoes.base.apps.configuracoes.models import *
 
 # Register your models here.
 
