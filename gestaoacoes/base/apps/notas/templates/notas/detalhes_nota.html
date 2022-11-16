@@ -1,0 +1,169 @@
+{% extends 'core/base_datatable.html' %}
+{% load static %}
+
+{% block title %}Detalhamento da Nota{% endblock %}
+{% block page_header %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="header-icon">
+            <i class="fa fa-info-circle"></i>
+        </div>
+        <div class="header-title">
+            <h1>Detalhes da Nota</h1>
+            <small>Aqui esta os detalhes da nota</small>
+        </div>
+    </section>
+{% endblock %}
+
+{% block section %}
+    <!-- Site wrapper -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12 pinpin">
+                <div class="card lobicard" data-sortable="true">
+                    <div class="card-header">
+                        <div class="card-title custom_title">
+                            <h4>Detalhes da Nota</h4>
+                        </div>
+                    </div>
+                    <!-- Exportar Arquivos> <-->
+                    <div class="card-body">
+                        <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
+                        <div class="btn-group d-flex" role="group">
+                            <div class="buttonexport" id="buttonlist">
+                                <a class="btn btn-secondary btn-sm"
+                                   href="{% url 'notas:lista_notas' %} "> <i
+                                        class="fa fa-arrow-left"></i>
+                                    Voltar
+                                </a>
+                                <a class="btn btn-add btn-sm"
+                                   href="{% url 'notas:editar_nota' nota.id_notas %} "> <i
+                                        class="fa fa-pencil"></i>
+                                    Editar Nota
+                                </a>
+
+                            </div>
+                        </div>
+                        <br>
+
+                        <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
+                        <div class="table-responsive">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}"
+                                         role="alert">{{ message }}</div>
+                                {% endfor %}
+                            {% endif %}
+                            <code><h2>Dados da Nota</h2></code>
+                            <hr>
+                            <b>Nota:</b> {{ nota.nota }}<br>
+                            <b>Corretora:</b> {{ nota.fk_corretora }}<br>
+                            <b>Data Pregão:</b> {{ nota.data_pregao | date:"d-m-Y" }}<br>
+                            <b>Data Liquidação:</b> {{ nota.data_liquidacao | date:"d-m-Y" }}<br>
+
+                            <hr>
+                            <code><h2>Ativos da Nota</h2></code>
+                            <br>
+                            <a class="btn btn-add btn-lg"
+                               href="{% url 'notas:incluir_ativo_nota' nota.id_notas %} "> <i
+                                    class="fa fa-pencil"> NOVO ATIVO</i>
+                            </a>
+                            <br><br>
+                            <table class="table table-bordered table-striped table-hover" id="tb_ativos_detalhes">
+                                <thead class="back_table_color">
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">C/V</th>
+                                    <th scope="col">Tipo</th>
+                                    <th scope="col">Ticker</th>
+                                    <th scope="col">QTD</th>
+                                    <th scope="col">Preço</th>
+                                    <th scope="col">Valor Opera.</th>
+                                    <th scope="col">Taxas</th>
+                                    <th scope="col">Valor Liq.</th>
+                                    <th scope="col">I.R.R.F</th>
+                                    <th scope="col">T. Liq.</th>
+                                    <th scope="col">T. Reg.</th>
+                                    <th scope="col">T. Term/Opc</th>
+                                    <th scope="col">T. A.N.A</th>
+                                    <th scope="col">Emolumentos</th>
+                                    <th scope="col">T. Oper.</th>
+                                    <th scope="col">T. Exec.</th>
+                                    <th scope="col">T. Custodia</th>
+                                    <th scope="col">Imposto</th>
+                                    <th scope="col">Outros</th>
+
+                                    <th scope="col">Editar|Detalhes|Excluir</th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for ativo in ativos %}
+
+                                    <tr>
+
+                                        <td>{{ ativo.id_ativo }}</td>
+                                        {% if  ativo.status == 'S' %}
+                                            <td>FEITO</td>
+                                        {% else %}
+                                            <td>NÃO FEITO</td>
+                                        {% endif %}
+                                        <td>{{ ativo.operacao }}</td>
+                                        <td>{{ ativo.tipo }}</td>
+                                        <td>{{ ativo.fk_ticker.ticker }}</td>
+                                        <td>{{ ativo.quantidade }}</td>
+                                        <td>{{ ativo.preco }}</td>
+                                        <td>{{ ativo.valor_operacao }}</td>
+                                        <td>{{ ativo.taxas }}</td>
+                                        <td>{{ ativo.valor_liquido }}</td>
+                                        <td>{{ ativo.irrf }}</td>
+                                        <td>{{ ativo.taxa_liquidacao }}</td>
+                                        <td>{{ ativo.taxa_registro }}</td>
+                                        <td>{{ ativo.taxa_termo_opcoes }}</td>
+                                        <td>{{ ativo.taxa_ana }}</td>
+                                        <td>{{ ativo.emolumentos }}</td>
+                                        <td>{{ ativo.taxa_operacional }}</td>
+                                        <td>{{ ativo.taxa_execucao }}</td>
+                                        <td>{{ ativo.taxa_custodia }}</td>
+                                        <td>{{ ativo.imposto }}</td>
+                                        <td>{{ ativo.outros }}</td>
+
+                                        <td>
+                                            <a href="{% url 'notas:editar_ativo' ativo.id_ativo %}">
+                                                <button type="button" class="btn btn-add btn-sm"
+                                                        data-toggle="modal"><i class="fa fa-pencil"></i>
+                                                </button>
+                                            </a>
+                                            <a href="{% url 'notas:deletar_ativo_detalhes' ativo.id_ativo %}">
+                                                <button type="button" class="btn btn-danger btn-sm"
+                                                        data-toggle="modal"><i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- customer Modal1 -->
+
+    </section>
+    <!-- /.content -->
+{% endblock %}
+{% block scripts %}
+
+    <script>
+        $(document).ready(function () {
+            $('#tb_ativos_detalhes').DataTable({
+                scrollX: true,
+            })
+        });
+    </script>
+
+{% endblock %}

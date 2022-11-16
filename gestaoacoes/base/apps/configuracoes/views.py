@@ -41,12 +41,6 @@ class editar_corretora(SuccessMessageMixin, UpdateView):
         data = facade.atualiza_corretora(self.kwargs['pk'])
         return data
 
-    def form_valid(self, form):
-        corretora = form
-        edita_corretora(corretora, self.request)
-
-        return super(editar_corretora, self).form_valid(form)
-
 
 class deletar_corretora(DeleteView):
     template_name = 'configuracoes/deletar_corretora.html'

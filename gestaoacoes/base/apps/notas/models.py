@@ -12,7 +12,6 @@ class Nota(models.Model):
 
     id_notas = models.BigAutoField(primary_key=True)
 
-    status = models.CharField('status nota', max_length=1, blank=True, null=True)
     nota = models.CharField('Nota', max_length=20, db_index=True, unique=True)
     fk_corretora = models.ForeignKey(Corretora, on_delete=models.CASCADE, verbose_name='Corretora')
     data_pregao = models.DateField('Data Pregão')
@@ -45,8 +44,15 @@ class Ativo(models.Model):
         ('REIT', 'REIT'),
         ('PREV.PRI', 'PREVIDENCIA PRIVADA'),
     )
+    ESTATUS = (
+        ('S', 'FEITO'),
+        ('N', 'NÃO FEITO')
+    )
+
     id_ativo = models.BigAutoField(primary_key=True)
+
     fk_nota = models.ForeignKey(Nota, on_delete=models.CASCADE)
+    status = models.CharField('status nota', max_length=1, choices=ESTATUS, default='N')
     operacao = models.CharField('Operação', max_length=1, choices=OPERACAO)
     tipo = models.CharField('Tipo', max_length=20, choices=TIPO)
     fk_ticker = models.ForeignKey(EmpresasListadas, on_delete=models.CASCADE, verbose_name='Ticker')
@@ -71,37 +77,29 @@ class Ativo(models.Model):
         verbose_name_plural = "Ativos"
 
     def __str__(self):
-        return '{} - {}'.format(self.fk_nota.nota, self.fk_ticker)
+        return 'ID: {} - Nota: {} - Ticker: {}'.format(self.id_ativo, self.fk_nota.nota, self.fk_ticker)
 
     objects = models
 
 
-# class Taxa(models.Model):
-#     id_taxa = models.BigAutoField(primary_key=True)
-#     fk_ativo = models.ForeignKey(Ativo, on_delete=models.CASCADE)
-#     taxas = models.DecimalField('Taxa', max_digits=12, decimal_places=2, default=0)
-#     valor_liquido = models.DecimalField('Valor Liquido', max_digits=12, decimal_places=2, default=0)
-#     irrf = models.DecimalField('I.R.R.F', max_digits=12, decimal_places=2, default=0)
-#     taxa_liquidacao = models.DecimalField('Taxa Liquidação', max_digits=12, decimal_places=2, default=0)
-#     taxa_registro = models.DecimalField('Taxa Registro', max_digits=12, decimal_places=2, default=0)
-#     taxa_termo_opcoes = models.DecimalField('Taxa Termo Opções', max_digits=12, decimal_places=2, default=0)
-#     taxa_ana = models.DecimalField('Taxa A.N.A', max_digits=12, decimal_places=2, default=0)
-#     emolumentos = models.DecimalField('Emolumentos', max_digits=12, decimal_places=2, default=0)
-#     taxa_operacional = models.DecimalField('Taxa Operacional', max_digits=12, decimal_places=2, default=0)
-#     taxa_execucao = models.DecimalField('Taxa Execução', max_digits=12, decimal_places=2, default=0)
-#     taxa_custodia = models.DecimalField('Taxa Custódia', max_digits=12, decimal_places=2, default=0)
-#     imposto = models.DecimalField('Imposto', max_digits=12, decimal_places=2, default=0)
-#     outros = models.DecimalField('Outros', max_digits=12, decimal_places=2, default=0)
-#
-#     class Meta:
-#         verbose_name_plural = "Ativos"
-#
-#     def __str__(self):
-#         return '{} - {}'.format(self.fk_ativo.fk_ticker, self.id_taxa)
-#
-#     objects = models
+class SplitInplit(models.Model):
+    ESTATUS = (
+        ('S', 'FEITO'),
+        ('N', 'NÃO FEITO')
+    )
 
+    id_splitinplit = models.BigAutoField(primary_key=True)
+    fk_ticker = models.ForeignKey(EmpresasListadas, on_delete=models.CASCADE, verbose_name='Ticker')
+    proporcao_de = models.IntegerField('Proporção DE')
+    proporcao_para = models.IntegerField('Proporção PARA')
+    data_corte = models.DateField()
+    status = models.CharField('Status', max_length=1, choices=ESTATUS, default='N')
+    data_exe = models.DateField(auto_now=True)
 
-# @receiver(post_save, sender=Ativo)
-# def update_vendas_total(sender, instance, **kwargs):
-#     instance.fk_nota.calcular_total()
+    class Meta:
+        verbose_name_plural = "Splits Inplits"
+
+    def __str__(self):
+        return 'Ticker: {} - De: {} - Para: {}'.format(self.fk_ticker.ticker, self.proporcao_de, self.proporcao_para)
+
+    objects = models

@@ -1,0 +1,152 @@
+{% extends 'core/base_datatable.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Novo Nota{% endblock %}
+
+{% block page_header %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="header-icon">
+            <i class="fa fa-wifi"></i>
+        </div>
+        <div class="header-title">
+            <h1>Novo Nota</h1>
+            <small>Adição de Nota</small>
+        </div>
+    </section>
+{% endblock %}
+
+{% block section %}
+    <!-- Site wrapper -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12 pinpin">
+                <div class="card lobicard" data-sortable="true">
+                    <div class="card-header all_card_btn">
+                        <div class="card-title custom_title">
+                            <h4>Fomulario de Nova Nota</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}"
+                                         role="alert">{{ message }}</div>
+                                {% endfor %}
+                            {% endif %}
+                            <code><h2>Numero da Nota: {{ nota }}</h2></code>
+                                <form action="{% url 'notas:incluir_ativo_nota' fk_nota %}" method="POST"
+                                      id="NovoAtivoNota"
+                                      novalidate>
+                                    {% csrf_token %}
+                                    <br>
+                                    <hr>
+                                    <code><h2>Itens do Pedido</h2></code>
+                                    <hr>
+                                    <br>
+                                    <div class="form-row">
+
+                                        <div class="form-group col-md-1,5 mb-0">
+                                            {{ form2.operacao|as_crispy_field }}
+                                        </div>
+
+                                        <div class="form-group col-md-1 mb-0">
+                                            {{ form2.tipo|as_crispy_field }}
+                                        </div>
+
+                                        <div class="form-group col-md-1 mb-0">
+                                            {{ form2.fk_ticker|as_crispy_field }}
+                                        </div>
+
+                                        <div class="form-group col-md-1 mb-1">
+                                            {{ form2.quantidade|as_crispy_field }}
+                                        </div>
+
+                                        <div class="form-group col-md-1 mb-0">
+                                            {{ form2.preco|as_crispy_field }}
+                                        </div>
+                                        <br>
+                                    </div>
+                                    <br>
+                                    <button class="btn btn-add btn-sm">Incluir</button>
+                                    <br>
+                                </form>
+                                <br>
+                                <h2>Listagem dos Ativos</h2>
+                                <br>
+                                <table class="table" id="tb_itens_pedido_detalhes">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Nota</th>
+                                        <th scope="col">Operação</th>
+                                        <th scope="col">Tipo</th>
+                                        <th scope="col">Ticker</th>
+                                        <th scope="col">Quantidade</th>
+                                        <th scope="col">Preço</th>
+                                        <th scope="col">Valor Operação</th>
+                                        <th scope="col">Editar|Excluir</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for ativo in ativos %}
+                                        <tr>
+                                            <td>{{ ativo.id_ativo }}</td>
+                                            <td>{{ ativo.fk_nota.nota }}</td>
+                                            <td>{{ ativo.operacao }}</td>
+                                            <td>{{ ativo.tipo }}</td>
+                                            <td>{{ ativo.fk_ticker.ticker }}</td>
+                                            <td>{{ ativo.quantidade }}</td>
+                                            <td>{{ ativo.preco }}</td>
+                                            <td>{{ ativo.valor_operacao }}</td>
+                                            <td>
+                                                <a href="{% url 'notas:editar_ativo' ativo.id_ativo %}">
+                                                    <button type="button" class="btn btn-add btn-sm"
+                                                            data-toggle="modal"><i class="fa fa-pencil"></i>
+                                                    </button>
+                                                </a>
+                                                <a href="{% url 'notas:deletar_ativo_incluir' ativo.id_ativo %}">
+                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                            data-toggle="modal"><i class="fa fa-trash-o"></i>
+                                                    </button>
+                                                </a>
+
+                                            </td>
+
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            <br>
+
+                            <a class="btn btn-add btn-lg"
+                               href="{% url 'notas:detalhes_nota' fk_nota %} "> <i
+                                    class="fa fa-backward">  Voltar</i></a>
+                            <br><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+{% endblock %}
+{% block static %}
+    <script src="{% static 'js/new_func.js' %}"></script>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            $('#tb_itens_pedido_detalhes')
+                .DataTable()
+        });
+
+    </script>
+{% endblock %}

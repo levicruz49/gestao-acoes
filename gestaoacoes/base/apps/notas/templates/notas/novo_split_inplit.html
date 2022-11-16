@@ -1,0 +1,104 @@
+{% extends 'core/base_datatable.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Novo Split Inplit{% endblock %}
+
+{% block page_header %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="header-icon">
+            <i class="fa fa-wifi"></i>
+        </div>
+        <div class="header-title">
+            <h1>Novo Split Inplit</h1>
+            <small>Adição de Split Inplit</small>
+        </div>
+    </section>
+{% endblock %}
+
+{% block section %}
+    <!-- Site wrapper -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12 pinpin">
+                <div class="card lobicard" data-sortable="true">
+                    <div class="card-header all_card_btn">
+                        <div class="card-title custom_title">
+                            <h4>Fomulario de Novo Split Inplit</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}"
+                                         role="alert">{{ message }}</div>
+                                {% endfor %}
+                            {% endif %}
+                            <form action="{% url 'notas:novo_split_inplit' %}" method="POST"
+                                  id="NovoSplitInplit"
+                                  novalidate>
+                                {% csrf_token %}
+                                <br>
+                                <hr>
+                                <code><h2>Split Inplit</h2></code>
+                                <hr>
+                                <br>
+                                <code><h5>INSTUÇÕES PARA SPLIT E INPLIT</h5></code>
+                                <br>
+                                <li>
+                                    Digite a proporção do evento. Ex: se for um split de 1 para 4, digite 1 no
+                                    "PROPORÇÃO DE" e 4 no "PROPORÇÃO PARA". Se for um inplit de 4 para 1, digite 4
+                                    "PROPORÇÃO DE" e 1 "PROPORÇÃO PARA".
+                                </li>
+
+                                <li>
+                                    Digite a data de corte do evento. Ex: os acionistas só terão direito a esse evento
+                                    se tiverem adquirido os ativos até a data 13/10/2020, então a data de corte é
+                                    13/10/2020
+                                </li>
+                                <br><br>
+                                <div class="form-row">
+
+                                    <div class="form-group col-md-1,5 mb-0">
+                                        {{ form.fk_ticker|as_crispy_field }}
+                                    </div>
+
+                                    <div class="form-group col-md-1 mb-0">
+                                        {{ form.proporcao_de|as_crispy_field }}
+                                    </div>
+
+                                    <div class="form-group col-md-1,2 mb-0">
+                                        {{ form.proporcao_para|as_crispy_field }}
+                                    </div>
+
+                                    <div class="form-group col-md-1 mb-1">
+                                        {{ form.data_corte|as_crispy_field }}
+                                    </div>
+
+                                    <br>
+                                </div>
+                                <br>
+                                <button class="btn btn-add btn-sm">Incluir</button>
+                                <br>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+{% endblock %}
+{% block static %}
+    <script src="{% static 'js/new_func.js' %}"></script>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

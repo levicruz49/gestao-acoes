@@ -174,14 +174,15 @@
 
                                 <br>
                                 <br>
+                                <code><h5>SOMENTE PREENCHA AS TAXAS QUANDO FINALIZAR A INCLUSÃO DE TODOS ATIVOS DA NOTA</h5></code>
                                 <br>
                                 <hr>
                                 <code><h2>Taxas da Nota</h2></code>
                                 <hr>
                                 <br>
 
-                                <form action="{% url 'notas:novo_taxa_nota' fk_nota %}" method="POST"
-                                      id="NovoAtivoNota"
+                                <form action="{% url 'notas:nova_taxa_nota' fk_nota %}" method="POST"
+                                      id="NovaTaxaNota"
                                       novalidate>
                                     {% csrf_token %}
                                     <div class="form-row">
@@ -237,7 +238,7 @@
                                 </form>
 
                                 <a href="{% url 'notas:lista_notas' %}"
-                                   class="btn btn-add btn-sm">Concluir</a>
+                                   class="btn btn-info btn-sm">Concluir</a>
                             {% endif %}
 
                         </div>

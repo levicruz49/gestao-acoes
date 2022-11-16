@@ -7,5 +7,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('gestaoacoes.base.urls')),
     path('configuracoes/', include('gestaoacoes.base.apps.configuracoes.urls')),
-    path('notas/', include('gestaoacoes.base.apps.notas.urls'))
+    path('notas/', include('gestaoacoes.base.apps.notas.urls')),
+    path('movimentacoes/', include('gestaoacoes.base.apps.movimentacoes.urls')),
+    path('resumos/', include('gestaoacoes.base.apps.resumos.urls')),
 ]

@@ -1,0 +1,53 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+
+{% block title %}Deletar Nota{% endblock %}
+
+{% block page_header %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="header-icon">
+            <i class="fa fa-building-o"></i>
+        </div>
+        <div class="header-title">
+            <h1>Deletar Nota</h1>
+            <small>Aqui esta a nota a ser deletada, lembre-se uma vez deletada tera que ser criada novamente.</small>
+        </div>
+    </section>
+{% endblock %}
+
+{% block section %}
+    <!-- Site wrapper -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12 pinpin">
+                <div class="card lobicard" data-sortable="true">
+                    <div class="card-header">
+                        <div class="card-title custom_title">
+                            <h4>Deletar Nota</h4>
+                        </div>
+                    </div>
+                    <!-- Exportar Arquivos> <-->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <form  method="POST">
+                                {% csrf_token %}
+                                 <h4>Você deseja confirmar a exclusão da Nota "{{object.nota}}" ? </h4>
+                                <br>
+                                <button type="submit" class="btn btn-danger btn-sm">Confirmo</button>
+                                <a href="{% url 'notas:lista_notas' %}">
+                                    <button type="button" class="btn btn-secondary btn-sm">Voltar</button>
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- customer Modal1 -->
+    </section>
+    <!-- /.content -->
+{% endblock %}
+

@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'gestaoacoes.base',
     'gestaoacoes.base.apps.configuracoes',
     'gestaoacoes.base.apps.notas',
+    'gestaoacoes.base.apps.movimentacoes',
+    'gestaoacoes.base.apps.resumos',
     "bootstrap4",
     'crispy_forms',
     'rolepermissions',
@@ -123,3 +125,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Formato de data
+DATE_INPUT_FORMATS = ['%d-%m-%Y']

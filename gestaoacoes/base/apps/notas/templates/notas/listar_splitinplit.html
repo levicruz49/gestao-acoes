@@ -2,7 +2,7 @@
 {% load static %}
 
 
-{% block title %}Lista Notas{% endblock %}
+{% block title %}Lista Splits Inplits{% endblock %}
 
 {% block page_header %}
     <!-- Content Header (Page header) -->
@@ -11,8 +11,8 @@
             <i class="fa fa-wifi"></i>
         </div>
         <div class="header-title">
-            <h1>Lista de Notas</h1>
-            <small>Aqui esta a lista das suas notas.</small>
+            <h1>Lista de Splits Inplits</h1>
+            <small>Aqui esta a lista das suas Splits Inplits.</small>
         </div>
     </section>
 {% endblock %}
@@ -26,7 +26,7 @@
                 <div class="card lobicard" data-sortable="true">
                     <div class="card-header">
                         <div class="card-title custom_title">
-                            <h4>Lista de Notas</h4>
+                            <h4>Lista de Splits Inplits</h4>
                         </div>
                     </div>
                     <!-- Exportar Arquivos> <-->
@@ -34,20 +34,20 @@
                         <!-- Plugin content:powerpoint,txt,pdf,png,word,xl -->
                         <div class="btn-group d-flex" role="group">
                             <div class="buttonexport" id="buttonlist">
-                                <a class="btn btn-add btn-sm" href="{% url 'notas:nova_nota' %}"> <i
+                                <a class="btn btn-add btn-sm" href="{% url 'notas:novo_split_inplit' %}"> <i
                                         class="fa fa-plus"></i>
-                                    Nova Nota
+                                    Nova Splits Inplits
                                 </a>
                             </div>
                         </div>
                         <div class="btn-group">
                             <button class="btn btn-exp btn-sm" data-toggle="dropdown"><i class="fa fa-bars"></i>
-                                Exportar Notas.
+                                Exportar Splits Inplits.
                             </button>
                             <ul class="dropdown-menu exp-drop" role="menu">
                                 <li>
                                     <a href="#"
-                                       onclick="$('#tb_notas').tableExport({type:'excel',escape:'false'});">
+                                       onclick="$('#tb_splitsinplits').tableExport({type:'excel',escape:'false'});">
                                         <img src="{% static 'assets/dist/img/xls.png' %}" width="24" alt="logo"> XLS</a>
                                 </li>
                             </ul>
@@ -62,48 +62,57 @@
                                 {% endfor %}
                             {% endif %}
 
-                            <table class="table table-bordered table-striped table-hover" id="tb_notas">
+                            <table class="table table-bordered table-striped table-hover" id="tb_splitsinplits">
                                 <thead class="back_table_color">
                                 <tr>
                                     <th scope="col">ID</th>
+                                    <th scope="col">Ticker</th>
+                                    <th scope="col">Proporção DE</th>
+                                    <th scope="col">Proporção PARA</th>
+                                    <th scope="col">Data Corte</th>
+                                    <th scope="col">Data Execução</th>
                                     <th scope="col">Status</th>
-                                    <th scope="col">Nota</th>
-                                    <th scope="col">Corretora</th>
-                                    <th scope="col">Data Pregão</th>
-                                    <th scope="col">Data Liquidação</th>
-                                    <th scope="col">Detalhes|Excluir</th>
+                                    
+                                    <th scope="col">Editar|Detalhes|Excluir</th>
 
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for ativo in ativos %}
+                                {% for split in splits %}
 
                                     <tr>
 
-                                    <td>{{ ativo.id_ativo }}</td>
-                                    {% if  ativo.status == 'S' %}
-                                        <td>FEITO</td>
+                                    <td>{{ split.id_splitinplit }}</td>
+                                    <td>{{ split.fk_ticker.ticker }}</td>
+                                    <td>{{ split.proporcao_de }}</td>
+                                    <td>{{ split.proporcao_para }}</td>
+                                    <td>{{ split.data_corte| date:"d-m-Y" }}</td>
+                                    <td>{{ split.data_exe| date:"d-m-Y" }}</td>
+                                    {% if  split.status == 'S' %}
+                                        <td>Concluido</td>
                                     {% else %}
                                         <td>NÃO FEITO</td>
                                     {% endif %}
-                                    <td>{{ ativo.fk_nota.nota }}</td>
-                                    <td>{{ ativo.fk_nota.fk_corretora.nome_corretora }}</td>
-                                    <td>{{ ativo.fk_nota.data_pregao| date:"d-m-Y" }}</td>
-                                    <td>{{ ativo.fk_nota.data_liquidacao| date:"d-m-Y" }}</td>
+
 
                                     <td>
-                                        <a href="{% url 'notas:detalhes_nota' ativo.id_ativo %}">
+                                        <a href="{ url 'clientes:editar_cliente' cliente.id %}">
+                                            <button type="button" class="btn btn-add btn-sm"
+                                                    data-toggle="modal"><i class="fa fa-pencil"></i>
+                                            </button>
+                                        </a>
+                                        <a href="{ url 'clientes:detalhe_cliente' cliente.id %}">
                                             <button type="button" class="btn btn-secondary btn-sm"
                                                     data-toggle="modal"><i class="fa fa-list"></i>
                                             </button>
                                         </a>
-                                        <a href="{% url 'notas:deletar_nota' ativo.fk_nota.id_notas %}">
+                                        <a href="{ url 'clientes:deletar_cliente' cliente.id %}">
                                             <button type="button" class="btn btn-danger btn-sm"
                                                     data-toggle="modal"><i class="fa fa-trash-o"></i>
                                             </button>
                                         </a>
                                     </td>
-                                    </tr>
+
                                 {% endfor %}
                                 </tbody>
                             </table>
@@ -120,7 +129,7 @@
 {% block scripts %}
     <script>
         $(document).ready(function () {
-            $('#tb_notas')
+            $('#tb_splitsinplits')
                 .DataTable()
         });
 
