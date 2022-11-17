@@ -72,3 +72,20 @@ class EditarAtivoForm(forms.ModelForm):
         # widgets = {'taxas': forms.DateInput(attrs={'required': 'true'}),
         #
         #            }
+
+
+class InserirTaxaForm(forms.ModelForm):
+    class Meta:
+        model = Ativo
+        fields = ['irrf',
+                  'taxa_liquidacao',
+                  'taxa_registro',
+                  'taxa_termo_opcoes',
+                  'taxa_ana',
+                  'emolumentos',
+                  'taxa_operacional',
+                  'taxa_execucao',
+                  'taxa_custodia',
+                  'imposto',
+                  'outros',
+                  ]

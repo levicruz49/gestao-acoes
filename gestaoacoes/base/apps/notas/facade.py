@@ -1,4 +1,7 @@
+import decimal
+
 from django.contrib import messages
+from django.db.models import Sum
 from django.shortcuts import render
 
 from gestaoacoes.base.apps.movimentacoes.forms import InsereSplitInplitForm
@@ -13,8 +16,8 @@ class SplitInplitCreationExcelption(Exception):
 
 
 def lista_notas():
-    ativos = Ativo.objects.all().order_by('-fk_nota__nota')
-    return ativos
+    notas = Nota.objects.all().order_by('nota')
+    return notas
 
 
 def criar_nova_nota(form, request):
@@ -40,7 +43,6 @@ def inserir_ativo_nota(form_2, nota, request):
     ativo.instance.valor_operacao = ativo.instance.quantidade * ativo.instance.preco
     ativo.save()
 
-
     ativos = ativo.instance.fk_nota.ativo_set.all()
     messages.success(request, 'O Ativo "%s" foi inserido com sucesso.' % ativo.instance.fk_ticker)
 
@@ -51,21 +53,107 @@ def inserir_taxa_nota(form_2, nota, request):
     taxa = form_2
 
     if taxa.instance.taxa_liquidacao != 0:
-
         irrf = taxa.instance.irrf
-        taxa_liquidacao = taxa.instance.taxa_liquidacao
-        taxa_registro = taxa.instance.taxa_registro
-        taxa_termo_opcoes = taxa.instance.taxa_termo_opcoes
-        taxa_ana = taxa.instance.taxa_ana
-        emolumentos = taxa.instance.emolumentos
-        taxa_operacional = taxa.instance.taxa_operacional
-        taxa_execucao = taxa.instance.taxa_execucao
-        taxa_custodia = taxa.instance.taxa_custodia
-        imposto = taxa.instance.imposto
-        outros = taxa.instance.outros
+        taxa_liquidacao = taxa.instance.taxa_liquidacao or 0
+        taxa_registro = taxa.instance.taxa_registro or 0
+        taxa_termo_opcoes = taxa.instance.taxa_termo_opcoes or 0
+        taxa_ana = taxa.instance.taxa_ana or 0
+        emolumentos = taxa.instance.emolumentos or 0
+        taxa_operacional = taxa.instance.taxa_operacional or 0
+        taxa_execucao = taxa.instance.taxa_execucao or 0
+        taxa_custodia = taxa.instance.taxa_custodia or 0
+        imposto = taxa.instance.imposto or 0
+        outros = taxa.instance.outros or 0
 
-        taxas = None
-        valor_liquido = None
+        # Taxas e Reteio
+
+        ativos = Ativo.objects.filter(fk_nota=nota)
+        nota = nota
+        n_ativos = Ativo.objects.filter(fk_nota=nota).count()
+        n_ativos_venda = Ativo.objects.filter(fk_nota=nota, operacao="V").count()
+        total_operacao = round(decimal.Decimal(
+            Ativo.objects.filter(fk_nota=nota).aggregate(Sum('valor_operacao'))['valor_operacao__sum'] or 0), 2)
+        total_operacao_venda = round(decimal.Decimal(
+            Ativo.objects.filter(fk_nota=nota, operacao="V").aggregate(Sum('valor_operacao'))[
+                'valor_operacao__sum'] or 0), 2)
+
+        for a in ativos:
+            if a.operacao == "V":
+                a.irrf = round((a.valor_operacao * irrf / total_operacao_venda), 2)
+            else:
+                a.irrf = 0.00
+                a.save()
+
+            a.taxa_liquidacao = round((a.valor_operacao * taxa_liquidacao / total_operacao), 2)
+            a.taxa_registro = round((a.valor_operacao * taxa_registro / total_operacao), 2)
+            a.taxa_termo_opcoes = round((a.valor_operacao * taxa_termo_opcoes / total_operacao), 2)
+            a.taxa_ana = round((a.valor_operacao * taxa_ana / total_operacao), 2)
+            a.emolumentos = round((a.valor_operacao * emolumentos / total_operacao), 2)
+            a.taxa_operacional = round((a.valor_operacao * taxa_operacional / total_operacao), 2)
+            a.taxa_execucao = round((a.valor_operacao * taxa_execucao / total_operacao), 2)
+            a.taxa_custodia = round((a.valor_operacao * taxa_custodia / total_operacao), 2)
+            a.imposto = round((a.valor_operacao * imposto / total_operacao), 2)
+            a.outros = round((a.valor_operacao * outros / total_operacao), 2)
+            a.taxas = a.taxa_liquidacao + a.taxa_registro + a.taxa_termo_opcoes + a.taxa_ana + a.emolumentos \
+                      + a.taxa_operacional + a.taxa_execucao + a.taxa_custodia + a.imposto + a.outros
+            if a.operacao == "C":
+                a.valor_liquido = a.valor_operacao + a.taxas
+            else:
+                a.valor_liquido = a.valor_operacao - a.taxas
+
+            a.save()
+
+        return ativos
+
+
+def edita_nota(fk_nota):
+    ativo = Ativo.objects.get(id_ativo=fk_nota)
+    return ativo.fk_nota
+
+
+def detalhes_nota(fk_nota):
+    nota = Nota.objects.get(id_notas=fk_nota)
+    return nota
+
+
+def detalhes_itens_pedido_fixa(fk_nota):
+    nota = Nota.objects.get(id_notas=fk_nota)
+    ativos = nota.ativo_set.all()
+    return ativos
+
+
+def edita_ativo(param):
+    ativo = Ativo.objects.get(id_ativo=param)
+    return ativo
+
+
+def inserir_ativo_nota_detalhes(form_2, fk_ativo, request):
+    ativo = form_2
+
+    ativo.instance.fk_nota_id = fk_ativo
+    ativo.instance.valor_operacao = ativo.instance.quantidade * ativo.instance.preco
+    ativo.save()
+
+    ativos = ativo.instance.fk_nota.ativo_set.all()
+    messages.success(request, 'O Ativo "%s" foi inserido com sucesso.' % ativo.instance.fk_ticker)
+
+    return ativos
+
+
+def deletar_nota(param):
+    nota = Nota.objects.get(id_notas=param)
+    return nota
+
+
+def deletar_ativo_detalhes(param):
+    ativo = Ativo.objects.get(id_ativo=param)
+    return ativo
+
+
+def deletar_ativo_incluir(param):
+    ativo = Ativo.objects.get(id_ativo=param)
+    return ativo
+
 
 def lista_splits():
     splits = SplitInplit.objects.all().order_by('data_corte')
@@ -113,52 +201,3 @@ def realizar_split_inplit(form, request):
 
     except SplitInplitCreationExcelption as e:
         return render(request, 'notas/novo_split_inplit.html', context={'form': e.form}, status=400)
-
-
-def edita_nota(fk_nota):
-    ativo = Ativo.objects.get(id_ativo=fk_nota)
-    return ativo.fk_nota
-
-
-def detalhes_nota(fk_nota):
-    nota = Ativo.objects.get(id_ativo=fk_nota)
-    return nota.fk_nota
-
-
-def detalhes_itens_pedido_fixa(fk_nota):
-    nota = Ativo.objects.get(id_ativo=fk_nota)
-    ativos = nota.fk_nota.ativo_set.all()
-    return ativos
-
-
-def edita_ativo(param):
-    ativo = Ativo.objects.get(id_ativo=param)
-    return ativo
-
-
-def inserir_ativo_nota_detalhes(form_2, fk_ativo, request):
-    ativo = form_2
-
-    ativo.instance.fk_nota_id = fk_ativo
-    ativo.instance.valor_operacao = ativo.instance.quantidade * ativo.instance.preco
-    ativo.save()
-
-    ativos = ativo.instance.fk_nota.ativo_set.all()
-    messages.success(request, 'O Ativo "%s" foi inserido com sucesso.' % ativo.instance.fk_ticker)
-
-    return ativos
-
-
-def deletar_nota(param):
-    nota = Nota.objects.get(id_notas=param)
-    return nota
-
-
-def deletar_ativo_detalhes(param):
-    ativo = Ativo.objects.get(id_ativo=param)
-    return ativo
-
-
-def deletar_ativo_incluir(param):
-    ativo = Ativo.objects.get(id_ativo=param)
-    return ativo

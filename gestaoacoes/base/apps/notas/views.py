@@ -6,7 +6,8 @@ from django.views.generic import UpdateView, DeleteView
 
 from gestaoacoes.base.apps.movimentacoes.forms import InsereSplitInplitForm
 from gestaoacoes.base.apps.notas import facade
-from gestaoacoes.base.apps.notas.forms import InsereNotaForm, InsereAtivoForm, EditarNotaForm, EditarAtivoForm
+from gestaoacoes.base.apps.notas.forms import InsereNotaForm, InsereAtivoForm, EditarNotaForm, EditarAtivoForm, \
+    InserirTaxaForm
 from gestaoacoes.base.apps.notas.models import Nota
 
 
@@ -14,7 +15,7 @@ from gestaoacoes.base.apps.notas.models import Nota
 
 def lista_notas(request):
     # A lista de notas é pego pelo ativo... para poder pegar todos os campos de nota e ativo
-    return render(request, 'notas/listar_notas.html', {'ativos': facade.lista_notas()}, )
+    return render(request, 'notas/listar_notas.html', {'notas': facade.lista_notas()}, )
 
 
 def nova_nota(request):
@@ -53,7 +54,6 @@ def novo_ativo_nota(request, fk_nota):
 
 
 def incluir_ativo_nota(request, fk_nota):
-
     if request.method == 'GET':
         form_2 = InsereAtivoForm()
         nota = Nota.objects.filter(id_notas=fk_nota)
@@ -69,23 +69,28 @@ def incluir_ativo_nota(request, fk_nota):
     ativos = facade.inserir_ativo_nota_detalhes(form_2, fk_nota, request)
 
     # return redirect('fixa_avancada:lista_pedidos_fixa')
-    return render(request, 'notas/incluir_ativo_nota.html', context={'form2': form_2, 'fk_nota': fk_nota, 'ativos': ativos,})
+    return render(request, 'notas/incluir_ativo_nota.html',
+                  context={'form2': form_2, 'fk_nota': fk_nota, 'ativos': ativos, })
 
 
 def nova_taxa_nota(request, fk_nota):
+    if request.method == 'GET':
+        form = InserirTaxaForm()
+        obj = Nota.objects.get(id_notas=fk_nota)
+        return render(request, 'notas/incluir_taxa_nota.html',
+                      context={'form2': form, 'fk_nota': fk_nota, 'nota': obj})
+
     obj = Nota.objects.get(id_notas=fk_nota)
-    form = InsereNotaForm(instance=obj)
-    form_2 = InsereAtivoForm(request.POST)
+    form_2 = InserirTaxaForm(request.POST)
 
     if not form_2.is_valid():
-        return render(request, 'notas/nova_nota.html', context={'form2': form_2})
+        return render(request, 'notas/incluir_taxa_nota.html',
+                      context={'form2': form_2, 'fk_nota': fk_nota, 'nota': obj})
 
     ativos = facade.inserir_taxa_nota(form_2, fk_nota, request)
 
-    # return redirect('fixa_avancada:lista_pedidos_fixa')
-    return render(request, 'notas/nova_nota.html',
-                  context={'form': form, 'form2': form_2, 'fk_nota': fk_nota, 'ativos': ativos,
-                           'n_nota': form.instance.nota})
+    return render(request, 'notas/detalhes_nota.html',
+                  context={'nota': facade.detalhes_nota(fk_nota), 'ativos': ativos, })
 
 
 class editar_nota(SuccessMessageMixin, UpdateView):
@@ -107,6 +112,11 @@ class editar_ativo(SuccessMessageMixin, UpdateView):
     def get_object(self, **kwargs):
         data = facade.edita_ativo(self.kwargs['fk_nota'])
         return data
+
+    def get_context_data(self, **kwargs):
+        context = super(editar_ativo, self).get_context_data(**kwargs)
+        context['fk_nota'] = self.object.fk_nota.id_notas
+        return context
 
     def get_success_url(self):
         return reverse('notas:detalhes_nota', kwargs={'fk_nota': self.object.fk_nota.id_notas})

@@ -66,7 +66,6 @@
                                 <thead class="back_table_color">
                                 <tr>
                                     <th scope="col">ID</th>
-                                    <th scope="col">Status</th>
                                     <th scope="col">Nota</th>
                                     <th scope="col">Corretora</th>
                                     <th scope="col">Data Pregão</th>
@@ -76,28 +75,23 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for ativo in ativos %}
+                                {% for nota in notas %}
 
                                     <tr>
 
-                                    <td>{{ ativo.id_ativo }}</td>
-                                    {% if  ativo.status == 'S' %}
-                                        <td>FEITO</td>
-                                    {% else %}
-                                        <td>NÃO FEITO</td>
-                                    {% endif %}
-                                    <td>{{ ativo.fk_nota.nota }}</td>
-                                    <td>{{ ativo.fk_nota.fk_corretora.nome_corretora }}</td>
-                                    <td>{{ ativo.fk_nota.data_pregao| date:"d-m-Y" }}</td>
-                                    <td>{{ ativo.fk_nota.data_liquidacao| date:"d-m-Y" }}</td>
+                                    <td>{{ nota.id_notas }}</td>
+                                    <td>{{ nota.nota }}</td>
+                                    <td>{{ nota.fk_corretora.nome_corretora }}</td>
+                                    <td>{{ nota.data_pregao| date:"d-m-Y" }}</td>
+                                    <td>{{ nota.data_liquidacao| date:"d-m-Y" }}</td>
 
                                     <td>
-                                        <a href="{% url 'notas:detalhes_nota' ativo.id_ativo %}">
+                                        <a href="{% url 'notas:detalhes_nota' nota.id_notas %}">
                                             <button type="button" class="btn btn-secondary btn-sm"
                                                     data-toggle="modal"><i class="fa fa-list"></i>
                                             </button>
                                         </a>
-                                        <a href="{% url 'notas:deletar_nota' ativo.fk_nota.id_notas %}">
+                                        <a href="{% url 'notas:deletar_nota' nota.id_notas %}">
                                             <button type="button" class="btn btn-danger btn-sm"
                                                     data-toggle="modal"><i class="fa fa-trash-o"></i>
                                             </button>

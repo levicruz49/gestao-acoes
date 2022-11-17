@@ -67,7 +67,11 @@
                             <br>
                             <a class="btn btn-add btn-lg"
                                href="{% url 'notas:incluir_ativo_nota' nota.id_notas %} "> <i
-                                    class="fa fa-pencil"> NOVO ATIVO</i>
+                                    class="fa fa-plus"> NOVO ATIVO</i>
+                            </a>
+                            <a class="btn btn-add btn-lg"
+                               href="{% url 'notas:nova_taxa_nota' nota.id_notas %} "> <i
+                                    class="fa fa-plus"> INCLUIR TAXA</i>
                             </a>
                             <br><br>
                             <table class="table table-bordered table-striped table-hover" id="tb_ativos_detalhes">
