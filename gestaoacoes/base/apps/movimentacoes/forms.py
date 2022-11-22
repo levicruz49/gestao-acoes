@@ -28,4 +28,4 @@ class InsereSplitInplitForm(forms.ModelForm):
 
         widgets = {'data_corte': forms.DateInput(attrs={'data-mask': "00/00/0000"}),
                    }
-
+        # TODO O TICKER DEVE TER APENAS OS PEPEIS QUE TENHO NA CARTEIRA

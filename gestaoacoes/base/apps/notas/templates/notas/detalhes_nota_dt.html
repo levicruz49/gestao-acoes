@@ -1,7 +1,7 @@
 {% extends 'core/base_datatable.html' %}
 {% load static %}
 
-{% block title %}Detalhamento da Nota{% endblock %}
+{% block title %}Detalhamento da Notas DayTrade{% endblock %}
 {% block page_header %}
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -9,7 +9,7 @@
             <i class="fa fa-info-circle"></i>
         </div>
         <div class="header-title">
-            <h1>Detalhes da Nota</h1>
+            <h1>Detalhes da Notas DayTrade</h1>
             <small>Aqui esta os detalhes da nota</small>
         </div>
     </section>
@@ -24,7 +24,7 @@
                 <div class="card lobicard" data-sortable="true">
                     <div class="card-header">
                         <div class="card-title custom_title">
-                            <h4>Detalhes da Nota</h4>
+                            <h4>Detalhes da Notas DayTrade</h4>
                         </div>
                     </div>
                     <!-- Exportar Arquivos> <-->
@@ -33,14 +33,14 @@
                         <div class="btn-group d-flex" role="group">
                             <div class="buttonexport" id="buttonlist">
                                 <a class="btn btn-secondary btn-sm"
-                                   href="{% url 'notas:lista_notas' %} "> <i
+                                   href="{% url 'notas:lista_notas_dt' %} "> <i
                                         class="fa fa-arrow-left"></i>
                                     Voltar
                                 </a>
                                 <a class="btn btn-add btn-sm"
-                                   href="{% url 'notas:editar_nota' nota.id_notas %} "> <i
+                                   href="{ url 'notas:editar_nota' nota.id_notas %} "> <i
                                         class="fa fa-pencil"></i>
-                                    Editar Nota
+                                    Editar Notas DayTrade
                                 </a>
 
                             </div>
@@ -55,22 +55,22 @@
                                          role="alert">{{ message }}</div>
                                 {% endfor %}
                             {% endif %}
-                            <code><h2>Dados da Nota</h2></code>
+                            <code><h2>Dados da Notas DayTrade</h2></code>
                             <hr>
-                            <b>Nota:</b> {{ nota.nota }}<br>
-                            <b>Corretora:</b> {{ nota.fk_corretora }}<br>
-                            <b>Data Pregão:</b> {{ nota.data_pregao | date:"d-m-Y" }}<br>
-                            <b>Data Liquidação:</b> {{ nota.data_liquidacao | date:"d-m-Y" }}<br>
+                            <b>Nota:</b> {{ nota.nota_dt }}<br>
+                            <b>Corretora:</b> {{ nota.fk_corretora_dt }}<br>
+                            <b>Data Pregão:</b> {{ nota.data_pregao_dt | date:"d-m-Y" }}<br>
+                            <b>Data Liquidação:</b> {{ nota.data_liquidacao_dt | date:"d-m-Y" }}<br>
 
                             <hr>
-                            <code><h2>Ativos da Nota</h2></code>
+                            <code><h2>Ativos da Nota DayTrade</h2></code>
                             <br>
                             <a class="btn btn-add btn-lg"
-                               href="{% url 'notas:incluir_ativo_nota' nota.id_notas %} "> <i
+                               href="{ url 'notas:incluir_ativo_nota' nota.id_notas %} "> <i
                                     class="fa fa-plus"> NOVO ATIVO</i>
                             </a>
                             <a class="btn btn-add btn-lg"
-                               href="{% url 'notas:nova_taxa_nota' nota.id_notas %} "> <i
+                               href="{ url 'notas:nova_taxa_nota' nota.id_notas %} "> <i
                                     class="fa fa-plus"> INCLUIR TAXA</i>
                             </a>
                             <br><br>
@@ -108,39 +108,39 @@
 
                                     <tr>
 
-                                        <td>{{ ativo.id_ativo }}</td>
-                                        {% if  ativo.status == 'S' %}
+                                        <td>{{ ativo.id_ativo_dt }}</td>
+                                        {% if  ativo.status_dt == 'S' %}
                                             <td>FEITO</td>
                                         {% else %}
                                             <td>NÃO FEITO</td>
                                         {% endif %}
-                                        <td>{{ ativo.operacao }}</td>
-                                        <td>{{ ativo.fk_tipo_ativo }}</td>
-                                        <td>{{ ativo.fk_ticker.ticker }}</td>
-                                        <td>{{ ativo.quantidade }}</td>
-                                        <td>{{ ativo.preco }}</td>
-                                        <td>{{ ativo.valor_operacao }}</td>
-                                        <td>{{ ativo.taxas }}</td>
-                                        <td>{{ ativo.valor_liquido }}</td>
-                                        <td>{{ ativo.irrf }}</td>
-                                        <td>{{ ativo.taxa_liquidacao }}</td>
-                                        <td>{{ ativo.taxa_registro }}</td>
-                                        <td>{{ ativo.taxa_termo_opcoes }}</td>
-                                        <td>{{ ativo.taxa_ana }}</td>
-                                        <td>{{ ativo.emolumentos }}</td>
-                                        <td>{{ ativo.taxa_operacional }}</td>
-                                        <td>{{ ativo.taxa_execucao }}</td>
-                                        <td>{{ ativo.taxa_custodia }}</td>
-                                        <td>{{ ativo.imposto }}</td>
-                                        <td>{{ ativo.outros }}</td>
+                                        <td>{{ ativo.operacao_dt }}</td>
+                                        <td>{{ ativo.fk_tipo_ativo_dt }}</td>
+                                        <td>{{ ativo.fk_ticker_dt.ticker }}</td>
+                                        <td>{{ ativo.quantidade_dt }}</td>
+                                        <td>{{ ativo.preco_dt }}</td>
+                                        <td>{{ ativo.valor_operacao_dt }}</td>
+                                        <td>{{ ativo.taxas_dt }}</td>
+                                        <td>{{ ativo.valor_liquido_dt }}</td>
+                                        <td>{{ ativo.irrf_dt }}</td>
+                                        <td>{{ ativo.taxa_liquidacao_dt }}</td>
+                                        <td>{{ ativo.taxa_registro_dt }}</td>
+                                        <td>{{ ativo.taxa_termo_opcoes_dt }}</td>
+                                        <td>{{ ativo.taxa_ana_dt }}</td>
+                                        <td>{{ ativo.emolumentos_dt }}</td>
+                                        <td>{{ ativo.taxa_operacional_dt }}</td>
+                                        <td>{{ ativo.taxa_execucao_dt }}</td>
+                                        <td>{{ ativo.taxa_custodia_dt }}</td>
+                                        <td>{{ ativo.imposto_dt }}</td>
+                                        <td>{{ ativo.outros_dt }}</td>
 
                                         <td>
-                                            <a href="{% url 'notas:editar_ativo' ativo.id_ativo %}">
+                                            <a href="{ url 'notas:editar_ativo' ativo.id_ativo %}">
                                                 <button type="button" class="btn btn-add btn-sm"
                                                         data-toggle="modal"><i class="fa fa-pencil"></i>
                                                 </button>
                                             </a>
-                                            <a href="{% url 'notas:deletar_ativo_detalhes' ativo.id_ativo %}">
+                                            <a href="{ url 'notas:deletar_ativo_detalhes' ativo.id_ativo %}">
                                                 <button type="button" class="btn btn-danger btn-sm"
                                                         data-toggle="modal"><i class="fa fa-trash-o"></i>
                                                 </button>

@@ -1,0 +1,86 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_filters %}
+{#{% extends 'core/base_datatable.html' %}#}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Novo Tipo Ativo{% endblock %}
+
+{% block page_header %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="header-icon">
+            <i class="fa fa-user-plus"></i>
+        </div>
+        <div class="header-title">
+            <h1>Novo Tipo Ativo</h1>
+            <small>Adição do Tipo Ativo</small>
+        </div>
+    </section>
+{% endblock %}
+
+{% block section %}
+    <!-- Site wrapper -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12 pinpin">
+                <div class="card lobicard" data-sortable="true">
+                    <div class="card-header all_card_btn">
+                        <div class="card-title custom_title">
+                            <h4>Fomulario de Adição do Tipo Ativo</h4>
+                        </div>
+                    </div>
+                    <!-- Exportar Arquivos> <-->
+                    <div class="card-body">
+                        <div class="table-responsive col-md-12">
+                            <form method="POST" id="personForm" class="was-validated" enctype="multipart/form-data"
+                                  action="{% url 'configuracoes:novo_tipo_ativo' %}">
+                                {% csrf_token %}
+
+                                <div class="col-md-8">
+                                    {% if form.errors %}
+                                        {% for field in form %}
+                                            {% for error in field.errors %}
+                                                <div class="alert alert-danger">
+                                                    <strong>{{ error|escape }}</strong>
+                                                </div>
+                                            {% endfor %}
+                                        {% endfor %}
+                                        {% for error in form.non_field_errors %}
+                                            <div class="alert alert-danger">
+                                                <strong>{{ error|escape }}</strong>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4 mb-0">
+                                            {{ form.nome_tipo_ativo|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-2,5 mb-0">
+                                            {{ form.corretagem|as_crispy_field }}
+                                        </div>
+                                    </div>
+
+                                    <br>
+                                    <button type="submit" class="btn btn-add btn-sm">Salvar</button>
+
+                                    <a href="{% url 'configuracoes:listar_tipos_ativo' %}"
+                                       class="btn btn-secondary btn-sm">Voltar</a>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+{% endblock %}
+{% block static %}
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+{% endblock %}

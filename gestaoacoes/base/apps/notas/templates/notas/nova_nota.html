@@ -99,16 +99,19 @@
                                     <hr>
                                     <br>
                                     <div class="form-row">
+                                        <div class="form-group col-md-2 mb-0">
+                                            {{ form2.daytrade|as_crispy_field }}
+                                        </div>
 
-                                        <div class="form-group col-md-1,5 mb-0">
+                                        <div class="form-group col-md-2 mb-0">
                                             {{ form2.operacao|as_crispy_field }}
                                         </div>
 
                                         <div class="form-group col-md-1 mb-0">
-                                            {{ form2.tipo|as_crispy_field }}
+                                            {{ form2.fk_tipo_ativo|as_crispy_field }}
                                         </div>
 
-                                        <div class="form-group col-md-1 mb-0">
+                                        <div class="form-group col-md-2 mb-0">
                                             {{ form2.fk_ticker|as_crispy_field }}
                                         </div>
 
@@ -128,7 +131,7 @@
                                 <br>
                                 <h2>Listagem dos Ativos</h2>
                                 <br>
-                                <table class="table" id="tb_itens_pedido">
+                                <table class="table table-bordered table-striped table-hover" id="tb_itens_pedido">
                                     <thead>
                                     <tr>
                                         <th scope="col">ID</th>
@@ -147,19 +150,19 @@
                                         <tr>
                                             <td>{{ ativo.id_ativo }}</td>
                                             <td>{{ ativo.fk_nota.nota }}</td>
-                                            <td>{{ ativo.operacao }}</td>
-                                            <td>{{ ativo.tipo }}</td>
+                                            <td>{{ ativo.get_operacao_display }}</td>
+                                            <td>{{ ativo.fk_tipo_ativo }}</td>
                                             <td>{{ ativo.fk_ticker.ticker }}</td>
                                             <td>{{ ativo.quantidade }}</td>
                                             <td>{{ ativo.preco }}</td>
                                             <td>{{ ativo.valor_operacao }}</td>
                                             <td>
-                                                <a href="{ url 'edit-item-pedido' item.id %}">
+                                                <a href="{% url 'notas:editar_ativo' ativo.id_ativo %}">
                                                     <button type="button" class="btn btn-add btn-sm"
                                                             data-toggle="modal"><i class="fa fa-pencil"></i>
                                                     </button>
                                                 </a>
-                                                <a href="{ url 'delete-item-pedido' item.id %}">
+                                                <a href="{% url 'notas:deletar_ativo_incluir' ativo.id_ativo %}">
                                                     <button type="button" class="btn btn-danger btn-sm"
                                                             data-toggle="modal"><i class="fa fa-trash-o"></i>
                                                     </button>
@@ -169,12 +172,62 @@
 
                                         </tr>
                                     {% endfor %}
+
+                                    </tbody>
+                                </table>
+                                <br>
+                                <h2>Listagem dos Ativos DayTrade</h2>
+                                <br>
+                                <table class="table table-bordered table-striped table-hover"
+                                       id="tb_itens_pedido_dt">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Nota</th>
+                                        <th scope="col">Operação</th>
+                                        <th scope="col">Tipo</th>
+                                        <th scope="col">Ticker</th>
+                                        <th scope="col">Quantidade</th>
+                                        <th scope="col">Preço</th>
+                                        <th scope="col">Valor Operação</th>
+                                        <th scope="col">Editar|Excluir</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for ativo in ativos_dt %}
+                                        <tr>
+                                            <td>{{ ativo.id_ativo_dt }}</td>
+                                            <td>{{ ativo.fk_nota_dt.nota_dt }}</td>
+                                            <td>{{ ativo.get_operacao_dt_display }}</td>
+                                            <td>{{ ativo.fk_tipo_ativo_dt }}</td>
+                                            <td>{{ ativo.fk_ticker_dt.ticker }}</td>
+                                            <td>{{ ativo.quantidade_dt }}</td>
+                                            <td>{{ ativo.preco_dt }}</td>
+                                            <td>{{ ativo.valor_operacao_dt }}</td>
+                                            <td>
+                                                <a href="{% url 'notas:editar_ativo' ativo.id_ativo_dt %}">
+                                                    <button type="button" class="btn btn-add btn-sm"
+                                                            data-toggle="modal"><i class="fa fa-pencil"></i>
+                                                    </button>
+                                                </a>
+                                                <a href="{% url 'notas:deletar_ativo_incluir' ativo.id_ativo_dt %}">
+                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                            data-toggle="modal"><i class="fa fa-trash-o"></i>
+                                                    </button>
+                                                </a>
+
+                                            </td>
+
+                                        </tr>
+                                    {% endfor %}
+
                                     </tbody>
                                 </table>
 
                                 <br>
                                 <br>
-                                <code><h5>SOMENTE PREENCHA AS TAXAS QUANDO FINALIZAR A INCLUSÃO DE TODOS ATIVOS DA NOTA</h5></code>
+                                <code><h5>**SOMENTE PREENCHA AS TAXAS QUANDO FINALIZAR A INCLUSÃO DE TODOS ATIVOS DA
+                                    NOTA**</h5></code>
                                 <br>
                                 <hr>
                                 <code><h2>Taxas da Nota</h2></code>
@@ -230,6 +283,11 @@
                                         <div class="form-group col-md-1 mb-0">
                                             {{ form2.outros|as_crispy_field }}
                                         </div>
+                                        {% if daytrade %}
+                                            <div class="form-group col-md-1 mb-0">
+                                                {{ form2.irrf_dt|as_crispy_field }}
+                                            </div>
+                                        {% endif %}
                                         <br>
                                     </div>
                                     <br>
@@ -258,8 +316,8 @@
 {% block scripts %}
     <script>
         $(document).ready(function () {
-            $('#tb_itens_pedido')
-                .DataTable()
+            $('#tb_itens_pedido').DataTable();
+            $('#tb_itens_pedido_dt').DataTable();
         });
 
     </script>

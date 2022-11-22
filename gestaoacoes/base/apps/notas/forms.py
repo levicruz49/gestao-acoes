@@ -16,8 +16,9 @@ class InsereNotaForm(forms.ModelForm):
 class InsereAtivoForm(forms.ModelForm):
     class Meta:
         model = Ativo
-        fields = ['operacao',
-                  'tipo',
+        fields = ['daytrade',
+                  'operacao',
+                  'fk_tipo_ativo',
                   'fk_ticker',
                   'quantidade',
                   'preco',
@@ -32,6 +33,7 @@ class InsereAtivoForm(forms.ModelForm):
                   'taxa_custodia',
                   'imposto',
                   'outros',
+                  'irrf_dt'
                   ] # '__all__'
 
         # widgets = {'taxas': forms.DateInput(attrs={'required': 'true'}),
@@ -51,8 +53,9 @@ class EditarNotaForm(forms.ModelForm):
 class EditarAtivoForm(forms.ModelForm):
     class Meta:
         model = Ativo
-        fields = ['operacao',
-                  'tipo',
+        fields = ['daytrade',
+                  'operacao',
+                  'fk_tipo_ativo',
                   'fk_ticker',
                   'quantidade',
                   'preco',
@@ -67,6 +70,7 @@ class EditarAtivoForm(forms.ModelForm):
                   'taxa_custodia',
                   'imposto',
                   'outros',
+                  'irrf_dt',
                   ]  # '__all__'
 
         # widgets = {'taxas': forms.DateInput(attrs={'required': 'true'}),
@@ -88,4 +92,5 @@ class InserirTaxaForm(forms.ModelForm):
                   'taxa_custodia',
                   'imposto',
                   'outros',
+                  'irrf_dt',
                   ]

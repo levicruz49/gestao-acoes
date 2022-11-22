@@ -44,3 +44,16 @@ class EmpresasListadas(models.Model):
     objects = models
 
 
+class TipoAtivo(models.Model):
+    id_tipo_ativo = models.BigAutoField(primary_key=True)
+
+    nome_tipo_ativo = models.CharField('Nome Ativo', max_length=200)
+    corretagem = models.DecimalField('Corretagem', max_digits=12, decimal_places=2, default=0)
+
+    class Meta:
+        verbose_name_plural = "Tipos Ativos"
+
+    def __str__(self):
+        return self.nome_tipo_ativo
+
+    objects = models

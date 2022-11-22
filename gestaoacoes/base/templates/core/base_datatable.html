@@ -246,6 +246,7 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="{% url 'configuracoes:lista_corretoras' %}">Corretoras</a></li>
+                        <li><a href="{% url 'configuracoes:listar_tipos_ativo' %}">Tipos Ativo</a></li>
                     </ul>
                 </li>
                 {% comment %}NOTAS{% endcomment %}
@@ -258,7 +259,7 @@
                     </a>
                     <ul class="treeview-menu">
                         <li><a href="{% url 'notas:lista_notas' %}">Notas</a></li>
-                        <li><a href="{ url 'telefones:lista_telefones' %}">Notas Day Trade</a></li>
+                        <li><a href="{% url 'notas:lista_notas_dt' %}">Notas Day Trade</a></li>
                         <li><a href="{ url 'func_pendente:lista_func_pendente' %}">Notas Opçoes</a></li>
                         <li><a href="{% url 'notas:lista_split_inplit' %}">Split - Inplit</a></li>
                     </ul>

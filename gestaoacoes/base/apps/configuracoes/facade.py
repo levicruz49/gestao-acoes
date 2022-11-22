@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render
 from unicodedata import normalize
 from gestaoacoes.base.apps.configuracoes.forms import InsereCorretoraForm, AtualizaCorretoraForm
-from gestaoacoes.base.apps.configuracoes.models import Corretora
+from gestaoacoes.base.apps.configuracoes.models import Corretora, TipoAtivo
 
 
 class CorretoraCreationExcelption(Exception):
@@ -10,10 +10,12 @@ class CorretoraCreationExcelption(Exception):
         super().__init__(*args)
         self.form = form
 
+
 class CorretoraEditiExcelption(Exception):
     def __init__(self, form: AtualizaCorretoraForm, *args: object) -> None:
         super().__init__(*args)
         self.form = form
+
 
 def listar_corretora():
     corretoras = Corretora.objects.filter(ativa='S').order_by('nome_corretora')
@@ -33,6 +35,7 @@ def criar_corretora(form, request):
 
     except CorretoraCreationExcelption as e:
         return render(request, 'configuracoes/nova_corretora.html', context={'form': e.form}, status=400)
+
 
 def edita_corretora(form, request):
     try:
@@ -64,3 +67,23 @@ def removerCaracteresEspeciais(text):
             '  ',
             ' ')
         return normalize('NFKD', text).encode('ASCII', 'ignore').decode('ASCII')
+
+
+def listar_tipos_ativos():
+    ativos = TipoAtivo.objects.all().order_by('nome_tipo_ativo')
+    return ativos
+
+
+def criar_tipo_ativo(form, request):
+    ativo = form
+    ativo.save()
+    messages.success(request, 'Ativo "%s" criado com sucesso!' % ativo.instance.nome_tipo_ativo)
+
+
+def atualiza_tipo_ativo(pk):
+    tipo = TipoAtivo.objects.get(id_tipo_ativo=pk)
+    return tipo
+
+def deletar_tipo_ativo(pk):
+    del_tipo = TipoAtivo.objects.get(id_tipo_ativo=pk)
+    return del_tipo
